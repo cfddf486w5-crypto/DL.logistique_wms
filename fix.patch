@@ -1,0 +1,87 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -794,22 +794,22 @@
+                 >
+                   <optgroup label="Racks Implantés sur le Plan 2D" className="bg-white text-slate-800">
+                     {shopMap.placedRacks.map((pr) => (
+                       <option key={pr.id} value={pr.id}>
+                         {pr.customLabel} ({rackTemplates.find(t => t.id === pr.rackTemplateId)?.name})
+                       </option>
+                     ))}
+                   </optgroup>
+                   <optgroup label="Modèles Génériques" className="bg-white text-slate-800">
+                     {rackTemplates.map((t) => (
+                       <option key={t.id} value={t.id}>
+                         Gabarit : {t.name}
++                      </option>
+                     ))}
+                   </optgroup>
+                 </select>
+               </div>
+-        )}
+ 
+               <p className="text-xs text-slate-500 font-medium">
+                 La fiche s'adapte automatiquement avec les dimensions, produits et consignes EN 15635 du rack ciblé.
+               </p>
+             </div>
+@@ -820,63 +820,53 @@
+             />
+           </div>
+         )}
+-
+-        )}
+ 
+         {activeTab === 'analytics' && (
+           <div className="max-w-7xl mx-auto w-full">
+             <AnalyticsDashboard
+               shopMap={shopMap}
+               alveoliStateByRack={alveoliStateByRack}
+               rackTemplates={rackTemplates}
+             />
+           </div>
++        )}
+ 
+         {activeTab === 'digital-twin' && (
+           <DigitalTwinDashboard
+             shopMap={shopMap}
+             rackTemplates={rackTemplates}
+             alveoliStateByRack={alveoliStateByRack}
+             products={products}
+           />
+         )}
+ 
+         {isFullScreenMapOpen && (
+           <FullScreenMap
+             shopMap={shopMap}
+             rackTemplates={rackTemplates}
+             alveoliStateByRack={alveoliStateByRack}
+             onClose={() => setIsFullScreenMapOpen(false)}
+           />
+         )}
+ 
+       </main>
+ 
+       {/* Global Brand Footer */}
+       <footer className="bg-slate-100/90 backdrop-blur-md text-slate-600 text-xs py-6 mt-12 border-t border-slate-200 print:hidden">
+         <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-between items-center gap-4">
+           <div>
+             <div className="flex items-center gap-2 text-slate-800 font-extrabold">
+               <Shield size={16} className="text-sky-600" />
+               <span className="font-display tracking-wider">DL. MAPPING · ENGINE</span>
+             </div>
+             <p className="text-[11px] text-slate-500 mt-0.5">Application d'optimisation d'alvéoles logistiques et d'implantation en entrepôt.</p>
+           </div>
+-        )}
+ 
+           <div className="text-[11px] text-slate-500">
+             Cabinet Certifié de Diagnostic & Conformité EN 15635 · &copy; 2026. Tous droits réservés.
+           </div>
+-        )}
+-
+         </div>
+-        )}
+-
+       </footer>
+     </div>
+   );
+ }

@@ -1,0 +1,6 @@
+{
+  "name": "DL. Mapping · Visualisation 3D d'Entrepôt",
+  "description": "Outil d'ingénierie et de diagnostic logistique interactif permettant de modéliser des racks de stockage, simuler le slotting de palettes en 3D et implanter les équipements sur le plan au sol de l'entrepôt.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
