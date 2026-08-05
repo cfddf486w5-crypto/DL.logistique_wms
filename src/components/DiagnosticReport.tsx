@@ -65,14 +65,14 @@ export default function DiagnosticReport({ rack, alveoli }: DiagnosticReportProp
 
 
 
-  const reportId = `REP-${rack.id.substring(0, 5).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-  const dateStr = new Date().toLocaleDateString('fr-FR', {
+  const reportId = React.useMemo(() => `REP-${rack.id.substring(0, 5).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`, [rack.id]);
+  const dateStr = React.useMemo(() => new Date().toLocaleDateString('fr-FR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  });
+  }), []);
 
   const handlePrint = () => {
     window.print();

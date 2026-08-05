@@ -30,13 +30,30 @@ export default function App() {
 
 
 
+  // One-time clean slate reset to purge old mock data from previous sessions
+  useEffect(() => {
+    if (!localStorage.getItem('dl_v4_clean_factory')) {
+      localStorage.removeItem('dl_rack_templates');
+      localStorage.removeItem('dl_shop_map');
+      localStorage.removeItem('dl_alveoli_state_by_rack');
+      localStorage.removeItem('dl_products');
+      clearAllData();
+      localStorage.setItem('dl_v4_clean_factory', 'true');
+      
+      setRackTemplates(DEFAULT_RACKS);
+      setShopMap(DEFAULT_SHOP_MAP);
+      setProducts(DEFAULT_PRODUCTS);
+      setAlveoliStateByRack({});
+    }
+  }, []);
+
   // Master State loaded from localStorage if available
   const [rackTemplates, setRackTemplates] = useState<Rack[]>(() => {
     const saved = localStorage.getItem('dl_rack_templates');
     let templates = saved ? JSON.parse(saved) : DEFAULT_RACKS;
     
     // Ensure the required new templates are always there
-    const requiredIds = ['rack-102-4-5', 'rack-144-6'];
+    const requiredIds = ['rack-standard-3', 'rack-144-6'];
     requiredIds.forEach(reqId => {
       if (!templates.find((t: any) => t.id === reqId)) {
         const defaultT = DEFAULT_RACKS.find((t) => t.id === reqId);
@@ -49,11 +66,7 @@ export default function App() {
 
   const [shopMap, setShopMap] = useState<ShopMap>(() => {
     const saved = localStorage.getItem('dl_shop_map');
-    const parsed = saved ? JSON.parse(saved) : DEFAULT_SHOP_MAP;
-    if (parsed && parsed.backgroundUrl && parsed.backgroundUrl.includes('/src/assets/images/')) {
-      parsed.backgroundUrl = DEFAULT_SHOP_MAP.backgroundUrl;
-    }
-    return parsed;
+    return saved ? JSON.parse(saved) : DEFAULT_SHOP_MAP;
   });
 
   // --- Undo/Redo logic ---
@@ -260,29 +273,24 @@ export default function App() {
   };
 
   // Reset workspace
-  const handleResetWorkspace = () => {
+  const handleResetWorkspace = async () => {
     if (confirm("Voulez-vous réinitialiser l'ensemble du plan et des configurations ? Vos modifications locales seront effacées.")) {
       localStorage.removeItem('dl_rack_templates');
       localStorage.removeItem('dl_shop_map');
       localStorage.removeItem('dl_alveoli_state_by_rack');
       localStorage.removeItem('dl_products');
+      await clearAllData();
       
       setRackTemplates(DEFAULT_RACKS);
       setShopMap(DEFAULT_SHOP_MAP);
       setProducts(DEFAULT_PRODUCTS);
-      
-      const initial: Record<string, Alveolus[]> = {};
-      DEFAULT_SHOP_MAP.placedRacks.forEach((pr) => {
-        const temp = DEFAULT_RACKS.find((t) => t.id === pr.rackTemplateId);
-        if (temp) {
-          initial[pr.id] = generateEmptyAlveoliForRack(temp);
-        }
-      });
-      setAlveoliStateByRack(initial);
-      setSelectedTemplateId(DEFAULT_RACKS[0].id);
+      setAlveoliStateByRack({});
+      if (DEFAULT_RACKS.length > 0) {
+        setSelectedTemplateId(DEFAULT_RACKS[0].id);
+      }
       setActiveEditingPlacedId(null);
-      setActiveTab('2d-map');
-      showNotification("Espace de travail réinitialisé aux valeurs d'usine.");
+      setActiveTab('ingestion');
+      showNotification("Espace de travail réinitialisé aux valeurs d'usine (0 données).");
     }
   };
 
@@ -1030,7 +1038,7 @@ export default function App() {
                 <Plus size={20} className="text-cyan-400" />
                 Nouveau Gabarit de Palettier
               </h2>
-              <button onClick={() => setShowCreateTemplateForm(false)} className="text-slate-400 hover:text-slate-400">
+              <button onClick={() => setShowCreateTemplateForm(false)} className="text-slate-400 hover:text-white cursor-pointer">
                 <X size={20} />
               </button>
             </div>

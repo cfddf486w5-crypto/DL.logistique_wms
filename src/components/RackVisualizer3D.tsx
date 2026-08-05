@@ -88,6 +88,8 @@ export const checkCollisions = (
   const subdivCount = targetAlv.isSubdivided ? (targetAlv.subdivisionCount || 1) : 1;
   const targetBinWidth = slotWidthMm / subdivCount;
   const pbIdx = targetPickBinIndex !== undefined ? targetPickBinIndex : 0;
+  const targetBIdx = targetAlv.binIndex;
+  const targetLIdx = targetAlv.levelIndex;
 
   // Vertical clearance check with the beam above (or total height)
   if (pHeight > targetAlv.heightMm) {
@@ -158,8 +160,6 @@ export const checkCollisions = (
   }
 
   // 3. Horizontal overlap checks
-  const targetBIdx = targetAlv.binIndex;
-  const targetLIdx = targetAlv.levelIndex;
 
   const targetSlotStart = rack.uprightWidthMm + targetBIdx * slotWidthMm + (targetAlv.isSubdivided ? pbIdx * targetBinWidth : 0);
   const targetSlotCenter = targetSlotStart + (targetAlv.isSubdivided ? targetBinWidth : slotWidthMm) / 2;
