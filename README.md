@@ -4,7 +4,7 @@
 > module est **[wms-slotting-3d-v2](https://github.com/cfddf486w5-crypto/wms-slotting-3d-v2)**.
 >
 > Celui-ci est conservé pour son historique — le travail se poursuit ailleurs.
-> La carte des huit modules : **[dl-logistique-suite](https://github.com/cfddf486w5-crypto/dl-logistique-suite)**
+> La carte des huit modules : **[docs/SUITE.md](https://github.com/cfddf486w5-crypto/C-dulerr/blob/main/docs/SUITE.md)**
 >
 > *Relevé du 10 septembre 2026.*
 
